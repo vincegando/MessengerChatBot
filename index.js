@@ -79,13 +79,14 @@ function sendTextMessage(sender, text) {
 
 function flip(sender) {
     let num = Math.random()
-    let result = "none"
+    let res = "none"
     if(num < .5) {
-    	result = "Heads"
+    	res = "Heads"
     }
     else {
-    	result = "Tails"
+    	res = "Tails"
     }
+    let result = { text:res }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token:token},
