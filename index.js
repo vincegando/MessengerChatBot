@@ -39,11 +39,12 @@ app.post('/webhook/', function (req, res) {
         let sender = event.sender.id
         if (event.message && event.message.text) {
             let text = event.message.text
-            if (text == 'Test') {
-            	sendGenericMessage(sender)
+            let lower = text.toLowerCase()
+            if (lower.substring(0,4) == 'flip') {
+            	flip(sender)
             	continue
             }
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            sendTextMessage(sender, "Tell me to flip...")
         }
         if (event.postback) {
         	let text = JSON.stringify(event.postback)
@@ -66,6 +67,32 @@ function sendTextMessage(sender, text) {
         json: {
             recipient: {id:sender},
             message: messageData,
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+}
+
+function flip(sender) {
+    let num = Math.random()
+    let result = "none"
+    if(num < .5) {
+    	result = "Heads"
+    }
+    else {
+    	result = "Tails"
+    }
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {access_token:token},
+        method: 'POST',
+        json: {
+            recipient: {id:sender},
+            message: result,
         }
     }, function(error, response, body) {
         if (error) {
