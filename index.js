@@ -27,6 +27,8 @@ app.get('/webhook/', function (req, res) {
 })
 
 app.post('/webhook/', function (req, res) {
+    let arr = []
+    let listString = ""
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.entry[0].messaging[i]
@@ -34,11 +36,25 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             let text = event.message.text
             let lower = text.toLowerCase()
-            if (lower.substring(0,4) == 'flip') {
-            	flip(sender)
+            if (lower.includes("add ") == true) {
+            	let element = lower.substring(lower.indexOf("add ") + 4)
+            	arr.push(element)
+            	for (var i = 0; i < arr.length; i++){
+            		listString = listString + (i + 1) + ". " + arr[i] + "\n"
+            	}
             	continue
             }
-            sendTextMessage(sender, "Tell me to flip...")
+            else if (lower.includes("delete ") == true) {
+            	let indexString = lower.substring(lower.indexOf("delete ") + 7)
+            	let index = parseInt(indexString)
+            	deleteElement(index,arr)
+            	continue
+            }
+            // if (lower.substring(0,4) == 'flip') {
+            // 	flip(sender)
+            // 	continue
+            // }
+            sendTextMessage(sender, "To add to your list, type \"Add [item]\". To delete an item from your list, type \"Delete [Number of item in list]\".")
         }
         if (event.postback) {
         	let text = JSON.stringify(event.postback)
@@ -96,6 +112,20 @@ function flip(sender) {
             console.log('Error: ', response.body.error)
         }
     })
+}
+
+function deleteElement(index, arr) {
+	if (index < 1 || index > arr.length{
+		sendTextMessage(sender, "Error: Invalid Index")
+		return
+	}
+	else {
+		index -= 1
+		for(var i = index; i < arr.length; i++) {
+			arr[i] = arr[i + 1]
+		}
+	}
+
 }
 
 
