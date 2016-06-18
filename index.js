@@ -39,8 +39,8 @@ app.post('/webhook/', function (req, res) {
             if (lower.includes("add ") == true) {
             	let element = lower.substring(lower.indexOf("add ") + 4)
             	arr.push(element)
-            	for (var i = 0; i < arr.length; i++){
-            		listString = listString + (i + 1) + ". " + arr[i] + "\n"
+            	for (var j = 0; j < arr.length; j++){
+            		listString = listString + (j + 1) + ". " + arr[j] + "\n"
             	}
             	sendTextMessage(sender, listString)
             	continue
@@ -49,8 +49,8 @@ app.post('/webhook/', function (req, res) {
             	let indexString = lower.substring(lower.indexOf("delete ") + 7)
             	let index = parseInt(indexString)
             	deleteElement(index,arr)
-            	for (var i = 0; i < arr.length; i++){
-            		listString = listString + (i + 1) + ". " + arr[i] + "\n"
+            	for (var k = 0; k < arr.length; k++){
+            		listString = listString + (k + 1) + ". " + arr[k] + "\n"
             	}
             	sendTextMessage(sender, listString)
             	continue
