@@ -29,7 +29,7 @@ app.get('/webhook/', function (req, res) {
 })
 
 app.post('/webhook/', function (req, res) {
-    let listString = ""
+    let listString = "Current list: /n"
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.entry[0].messaging[i]
@@ -56,11 +56,16 @@ app.post('/webhook/', function (req, res) {
             	sendTextMessage(sender, listString)
             	continue
             }
+            else if (lower.includes("clear") == true){
+            	arr = []
+            	sendTextMessage(sender, "List successfully cleared.")
+            	continue
+            }
             // if (lower.substring(0,4) == 'flip') {
             // 	flip(sender)
             // 	continue
             // }
-            sendTextMessage(sender, "To add to your list, type \"Add [item]\". To delete an item from your list, type \"Delete [Number of item in list]\".")
+            sendTextMessage(sender, "To add to your list, type \"Add [item]\". To delete an item from your list, type \"Delete [Number of item in list]\". To clear your list, type \"Clear\".")
         }
         if (event.postback) {
         	let text = JSON.stringify(event.postback)
@@ -128,7 +133,13 @@ function deleteElement(sender, index, arr) {
 	else {
 		index -= 1
 		for(var i = index; i < arr.length; i++) {
-			arr[i] = arr[i + 1]
+			if (i == arr.length - 1) {
+				delete arr[i]
+				continue
+			}
+			else{
+				arr[i] = arr[i + 1]
+			}
 		}
 	}
 
