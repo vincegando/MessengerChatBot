@@ -4,6 +4,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
+let arr = []
+let listString = ""
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -27,8 +29,6 @@ app.get('/webhook/', function (req, res) {
 })
 
 app.post('/webhook/', function (req, res) {
-    let arr = []
-    let listString = ""
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.entry[0].messaging[i]
@@ -48,7 +48,7 @@ app.post('/webhook/', function (req, res) {
             else if (lower.includes("delete ") == true) {
             	let indexString = lower.substring(lower.indexOf("delete ") + 7)
             	let index = parseInt(indexString)
-            	deleteElement(index,arr)
+            	deleteElement(sender, index, arr)
             	for (var k = 0; k < arr.length; k++){
             		listString = listString + (k + 1) + ". " + arr[k] + "\n"
             	}
@@ -119,7 +119,7 @@ function flip(sender) {
     })
 }
 
-function deleteElement(index, arr) {
+function deleteElement(sender, index, arr) {
 	if (index < 1 || index > arr.length) {
 		sendTextMessage(sender, "Error: Invalid Index")
 		return
