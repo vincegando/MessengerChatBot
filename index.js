@@ -42,12 +42,17 @@ app.post('/webhook/', function (req, res) {
             	for (var i = 0; i < arr.length; i++){
             		listString = listString + (i + 1) + ". " + arr[i] + "\n"
             	}
+            	sendTextMessage(sender, listString)
             	continue
             }
             else if (lower.includes("delete ") == true) {
             	let indexString = lower.substring(lower.indexOf("delete ") + 7)
             	let index = parseInt(indexString)
             	deleteElement(index,arr)
+            	for (var i = 0; i < arr.length; i++){
+            		listString = listString + (i + 1) + ". " + arr[i] + "\n"
+            	}
+            	sendTextMessage(sender, listString)
             	continue
             }
             // if (lower.substring(0,4) == 'flip') {
