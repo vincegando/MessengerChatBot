@@ -51,7 +51,7 @@ app.post('/webhook/', function (req, res) {
             	let index = parseInt(indexString)
             	deleteElement(sender, index, arr)
             	for (var k = 0; k < arr.length; k++){
-            		if (arr[k] == "undefined") {
+            		if (arr[k] === undefined) {
             			break
             		}
             		listString = listString + (k + 1) + ". " + arr[k] + "\n"
