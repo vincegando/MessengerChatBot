@@ -120,7 +120,7 @@ function flip(sender) {
 }
 
 function deleteElement(index, arr) {
-	if (index < 1 || index > arr.length{
+	if (index < 1 || index > arr.length) {
 		sendTextMessage(sender, "Error: Invalid Index")
 		return
 	}
