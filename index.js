@@ -29,7 +29,7 @@ app.get('/webhook/', function (req, res) {
 })
 
 app.post('/webhook/', function (req, res) {
-    let listString = "Current list: /n"
+    let listString = "Current list: \n"
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
         let event = req.body.entry[0].messaging[i]
@@ -51,6 +51,9 @@ app.post('/webhook/', function (req, res) {
             	let index = parseInt(indexString)
             	deleteElement(sender, index, arr)
             	for (var k = 0; k < arr.length; k++){
+            		if (arr[k] == "undefined") {
+            			break
+            		}
             		listString = listString + (k + 1) + ". " + arr[k] + "\n"
             	}
             	sendTextMessage(sender, listString)
